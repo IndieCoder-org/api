@@ -27,17 +27,27 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['indiecoder.pythonanywhere.com']
 
-
-# Application definition
-
-INSTALLED_APPS = [
-    'django.contrib.admin',
+# APP CONFIGURATION
+# ------------------------------------------------------------------------------
+DJANGO_APPS = [
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.admin',
 ]
+
+THIRD_PARTY_APPS = [
+    'rest_framework',
+]
+
+LOCAL_APPS = [
+    'users',
+]
+
+# See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
+INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
