@@ -25,7 +25,7 @@ SECRET_KEY = 'no_secret'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['indiecoder.pythonanywhere.com']
+ALLOWED_HOSTS = ['indiecoder.pythonanywhere.com', '127.0.0.1']
 
 # APP CONFIGURATION
 # ------------------------------------------------------------------------------
@@ -40,6 +40,7 @@ DJANGO_APPS = [
 
 THIRD_PARTY_APPS = [
     'rest_framework',
+    'corsheaders',
 ]
 
 LOCAL_APPS = [
@@ -140,3 +141,17 @@ MEDIA_ROOT = '/home/indiecoder/core/media'
 MEDIA_URL = '/media/'
 STATIC_ROOT = '/home/indiecoder/core/static'
 STATIC_URL = '/static/'
+
+# Django REST Framework settings.
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'rest_framework.authentication.SessionAuthentication'
+    ],
+}
+
+# CORS Settings
+CORS_ORIGIN_ALLOW_ALL = True
+
+# Project Specific
+AUTH_USER_MODEL = 'users.User'
