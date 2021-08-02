@@ -25,19 +25,30 @@ SECRET_KEY = 'no_secret'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['indiecoder.pythonanywhere.com']
+ALLOWED_HOSTS = ['indiecoder.pythonanywhere.com', '127.0.0.1']
 
-
-# Application definition
-
-INSTALLED_APPS = [
-    'django.contrib.admin',
+# APP CONFIGURATION
+# ------------------------------------------------------------------------------
+DJANGO_APPS = [
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.admin',
 ]
+
+THIRD_PARTY_APPS = [
+    'rest_framework',
+    'corsheaders',
+]
+
+LOCAL_APPS = [
+    'users',
+]
+
+# See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
+INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -47,6 +58,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'core.urls'
@@ -130,3 +142,17 @@ MEDIA_ROOT = '/home/indiecoder/core/media'
 MEDIA_URL = '/media/'
 STATIC_ROOT = '/home/indiecoder/core/static'
 STATIC_URL = '/static/'
+
+# Django REST Framework settings.
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'rest_framework.authentication.SessionAuthentication'
+    ],
+}
+
+# CORS Settings
+CORS_ORIGIN_ALLOW_ALL = True
+
+# Project Specific
+AUTH_USER_MODEL = 'users.User'

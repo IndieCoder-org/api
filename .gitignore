@@ -73,7 +73,7 @@ celerybeat-schedule
 # Pyre type checker
 .pyre/
 .idea/
-.vs/
+.vscode/
 .env
 env
 .pk
