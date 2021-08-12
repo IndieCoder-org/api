@@ -9,6 +9,7 @@ django-rest-framework = "*"
 django-cors-headers = "*"
 djangorestframework-simplejwt = "*"
 pillow = "*"
+django-autoslug = "*"
 
 [dev-packages]
 
