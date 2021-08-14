@@ -19,7 +19,7 @@ class UserSerializer(serializers.ModelSerializer):
         if 'last_name' in validated_data.keys():
             user.last_name = validated_data['last_name']
         if 'nick_name' in validated_data.keys():
-            user.last_name = validated_data['nick_name']
+            user.nick_name = validated_data['nick_name']
         user.save()
 
         return user
