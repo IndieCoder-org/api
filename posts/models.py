@@ -72,3 +72,11 @@ class Post(CommonInfo, models.Model):
         thumbnail = File(thumb_io, name=image.name)
 
         return thumbnail
+
+class Comment(CommonInfo, models.Model):
+    post_field = models.ForeignKey(Post, on_delete=models.CASCADE)
+    content = models.TextField()
+    up_votes = models.PositiveBigIntegerField(default=0)
+
+    def __str__(self):
+        return f"comment on - {self.post_field}"
