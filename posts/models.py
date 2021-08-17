@@ -80,3 +80,14 @@ class Comment(CommonInfo, models.Model):
 
     def __str__(self):
         return f"comment on - {self.post_field}"
+
+class Reply(CommonInfo, models.Model):
+    comment_field = models.ForeignKey(Comment, on_delete=models.CASCADE, related_name='+')
+    content = models.TextField()
+    up_votes = models.PositiveBigIntegerField(default=0)
+
+    class Meta:
+        verbose_name_plural = "Replies"
+
+    def __str__(self):
+        return f"reply to - {self.comment_field}"
