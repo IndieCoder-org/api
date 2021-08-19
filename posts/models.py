@@ -73,6 +73,7 @@ class Post(CommonInfo, models.Model):
 
         return thumbnail
 
+
 class Comment(CommonInfo, models.Model):
     post_field = models.ForeignKey(Post, on_delete=models.CASCADE)
     content = models.TextField()
@@ -80,6 +81,7 @@ class Comment(CommonInfo, models.Model):
 
     def __str__(self):
         return f"comment on - {self.post_field}"
+
 
 class Reply(CommonInfo, models.Model):
     comment_field = models.ForeignKey(Comment, on_delete=models.CASCADE, related_name='+')
