@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
-from .models import Post
+from .models import Post, Comment, Reply
 
 
 class PostSerializer(serializers.ModelSerializer):
@@ -27,3 +27,35 @@ class PostSerializer(serializers.ModelSerializer):
             'get_thumbnail',
         ]
         read_only_fields = ['owner', 'up_votes']
+
+
+class CommentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comment
+        fields = [
+            'id',
+            'post_field',
+            'content',
+            'up_votes',
+            'format_created_at'
+        ]
+        read_only_fields = [
+            'owner',
+            'post_field'
+        ]
+
+
+class ReplySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Reply
+        fields = [
+            'id',
+            'comment_field',
+            'content',
+            'up_votes',
+            'format_created_at'
+        ]
+        read_only_fields = [
+            'owner',
+            'comment_field'
+        ]
