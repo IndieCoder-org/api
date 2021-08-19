@@ -11,6 +11,9 @@ class PostSerializer(serializers.ModelSerializer):
             raise ValidationError("You may not edit date!")
         return value
 
+    def create(self, validated_data):
+        return Post.objects.create(**validated_data)
+
     class Meta:
         model = Post
         fields = [
