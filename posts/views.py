@@ -3,7 +3,6 @@ from rest_framework.views import APIView
 from rest_framework.mixins import CreateModelMixin
 from rest_framework import permissions
 from rest_framework.response import Response
-from rest_framework.parsers import JSONParser
 from rest_framework import status
 
 from django.db.models import Q
@@ -42,9 +41,9 @@ class PostCreateListAPIView(CreateModelMixin, ListAPIView):
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
 
-# This is umair-karel
 
-class PostDetailView(CreateModelMixin, APIView):
+class PostDetailView(APIView):
+
     serializer_class = PostSerializer
     permission_classes = [permissions.IsAuthenticated, IsOwner]
 
