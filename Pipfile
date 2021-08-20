@@ -11,6 +11,7 @@ djangorestframework-simplejwt = "*"
 pillow = "*"
 django-autoslug = "*"
 factory-boy = "*"
+faker = "*"
 
 [dev-packages]
 

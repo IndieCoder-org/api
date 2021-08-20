@@ -3,22 +3,36 @@ from .models import Post
 from users.models import User
 
 
-class TestPost(TestCase):
-
-    def test_create_post(self):
-        post = Post.objects.create(
-            title="Django Test",
-            slug="django_test",
-            content="Automated testing is an extremely useful bug-killing tool for the modern Web developer.",
-            up_votes=100,
-            owner=User.objects.create_user(
-                email="test@email.com",
-                password="password1",
-                nick_name="nick_name"
-            )
+class PostModelTestCase(TestCase):
+    def setUp(self):
+        owner = User.objects.create_superuser(
+            email='admin@indiecoder.com',
+            password='admin'
         )
-        assert post.__str__() == post.title
-        assert str(post) == post.title
-        assert post.slug == "django_test"
-        assert post.content == str(post.content)
-        assert post.up_votes == int(post.up_votes)
+        self.post = Post.objects.create(
+            title='Test title',
+            content='Test content',
+            owner=owner
+        )
+
+    def test_str_representation(self):
+        self.assertEqual(self.post.__str__(), self.post.title)
+
+    def test_auto_populated_updated_at(self):
+        self.assertIsNotNone(self.post.updated_at)
+
+        old_post_updated_at = self.post.updated_at
+        self.post.content = 'New test content'
+        self.post.save()
+        self.post.refresh_from_db()
+        self.assertTrue(self.post.updated_at > old_post_updated_at)
+
+    def test_get_absolute_url(self):
+        expected_url = '/test-title/'
+        self.assertEqual(self.post.get_absolute_url(), expected_url)
+
+    def test_up_votes(self):
+        self.post.up_votes += 1
+        self.assertEqual(self.post.up_votes, 1)
+        self.post.up_votes += 1
+        self.assertEqual(self.post.up_votes, 2)
