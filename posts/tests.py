@@ -28,7 +28,7 @@ class PostModelTestCase(TestCase):
         self.assertTrue(self.post.updated_at > old_post_updated_at)
 
     def test_get_absolute_url(self):
-        expected_url = '/test-title/'
+        expected_url = f'/{self.post.pk}/{self.post.slug}/'
         self.assertEqual(self.post.get_absolute_url(), expected_url)
 
     def test_up_votes(self):
