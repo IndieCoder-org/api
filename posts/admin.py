@@ -11,5 +11,22 @@ class PostAdmin(admin.ModelAdmin):
         'created_at',
     ]
 
-admin.site.register(Comment)
-admin.site.register(Reply)
+
+@admin.register(Comment)
+class CommentAdmin(admin.ModelAdmin):
+    list_display = [
+        'content',
+        'post_field',
+        'owner',
+        'created_at',
+    ]
+
+
+@admin.register(Reply)
+class ReplyAdmin(admin.ModelAdmin):
+    list_display = [
+        'content',
+        'comment_field',
+        'owner',
+        'created_at',
+    ]
