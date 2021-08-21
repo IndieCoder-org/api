@@ -19,6 +19,7 @@ class PostSerializer(serializers.ModelSerializer):
         fields = [
             'id',
             'title',
+            'slug',
             'content',
             'up_votes',
             'owner',
@@ -29,7 +30,10 @@ class PostSerializer(serializers.ModelSerializer):
             'get_image',
             'get_thumbnail',
         ]
-        read_only_fields = ['owner', 'up_votes']
+        read_only_fields = [
+            'owner',
+            'up_votes'
+        ]
 
 
 class CommentSerializer(serializers.ModelSerializer):
