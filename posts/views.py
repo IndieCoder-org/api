@@ -79,6 +79,13 @@ class PostDetailView(APIView):
         post.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+
+""" METHODS:
+    GET ---> /posts/post_id/post_slug/comments/, Comments list 
+    POST --> /posts/post_id/post_slug/comments/, POST new comment
+"""
+
+
 class CommentListView(APIView):
 
     serializer_class = CommentSerializer
@@ -89,6 +96,21 @@ class CommentListView(APIView):
         comments = Comment.objects.filter(post_field=post)
         serializer = CommentSerializer(comments, many=True)
         return Response(serializer.data)
+
+    def post(self, request, *args, **kwargs):
+        serializer = CommentSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(owner=self.request.user)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+""" METHODS:
+    GET --> /posts/post_id/post_slug/comments/comment_id/, comment Details
+    PUT --> /posts/post_id/post_slug/comments/comment_id/, comment Update
+    DELETE --> /posts/post_id/post_slug/comments/comment_id/, comment Delete
+"""
+
 
 class CommentDetailView(APIView):
 
@@ -128,6 +150,23 @@ def post_up_votes(request, pk):
     post = get_object_or_404(Post, pk=pk)
     post.up_votes += 1
     post.save()
+    data = {
+        'success': True
+    }
+    return Response(data)
+
+
+""" METHODS:
+    POST --> /posts/comments/id/, Commont up_votes
+"""
+
+
+@api_view(['POST'])
+@permission_classes([permissions.IsAuthenticated])
+def comment_up_votes(request, pk):
+    comment = get_object_or_404(Comment, pk=pk)
+    comment.up_votes += 1
+    comment.save()
     data = {
         'success': True
     }
