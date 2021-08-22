@@ -79,6 +79,7 @@ class PostDetailView(APIView):
         post.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+
 class CommentListView(APIView):
 
     serializer_class = CommentSerializer
@@ -89,6 +90,14 @@ class CommentListView(APIView):
         comments = Comment.objects.filter(post_field=post)
         serializer = CommentSerializer(comments, many=True)
         return Response(serializer.data)
+
+    def post(self, request, *args, **kwargs):
+        serializer = CommentSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(owner=self.request.user)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 class CommentDetailView(APIView):
 
