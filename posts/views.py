@@ -138,6 +138,7 @@ class CommentDetailView(APIView):
         comment.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+
 class ReplyListView(APIView):
 
     serializer_class = ReplySerializer
@@ -156,6 +157,7 @@ class ReplyListView(APIView):
             serializer.save(owner=request.user,comment_field_id=comment_pk)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 class ReplyDetailView(APIView):
 
@@ -215,6 +217,23 @@ def comment_up_votes(request, pk):
     comment = get_object_or_404(Comment, pk=pk)
     comment.up_votes += 1
     comment.save()
+    data = {
+        'success': True
+    }
+    return Response(data)
+
+
+""" METHODS:
+    POST --> /posts/replies/id/, Commont up_votes
+"""
+
+
+@api_view(['POST'])
+@permission_classes([permissions.IsAuthenticated])
+def reply_up_votes(request, pk):
+    reply = get_object_or_404(Reply, pk=pk)
+    reply.up_votes += 1
+    reply.save()
     data = {
         'success': True
     }
