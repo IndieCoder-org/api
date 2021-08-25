@@ -32,11 +32,13 @@ class PostSerializer(serializers.ModelSerializer):
         ]
         read_only_fields = [
             'owner',
-            'up_votes'
+            'up_votes',
         ]
 
 
 class CommentSerializer(serializers.ModelSerializer):
+    owner = serializers.StringRelatedField()
+
     class Meta:
         model = Comment
         fields = [
@@ -44,15 +46,14 @@ class CommentSerializer(serializers.ModelSerializer):
             'post_field',
             'content',
             'up_votes',
-            'format_created_at'
-        ]
-        read_only_fields = [
             'owner',
-            'post_field'
+            'format_created_at',
         ]
 
 
 class ReplySerializer(serializers.ModelSerializer):
+    owner = serializers.StringRelatedField()
+
     class Meta:
         model = Reply
         fields = [
@@ -60,9 +61,10 @@ class ReplySerializer(serializers.ModelSerializer):
             'comment_field',
             'content',
             'up_votes',
-            'format_created_at'
+            'owner',
+            'format_created_at',
         ]
         read_only_fields = [
             'owner',
-            'comment_field'
+            'comment_field',
         ]
