@@ -8,8 +8,8 @@ from rest_framework.decorators import api_view, permission_classes
 
 from django.db.models import Q
 
-from .serializers import PostSerializer, CommentSerializer
-from .models import Post, Comment
+from .serializers import PostSerializer, CommentSerializer, ReplySerializer
+from .models import Post, Comment, Reply
 from .permissions import IsOwner
 
 
@@ -136,6 +136,54 @@ class CommentDetailView(APIView):
         post = Post.objects.get(pk=post_pk, slug=slug)
         comment = Comment.objects.get(pk=comment_pk, post_field=post)
         comment.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+class ReplyListView(APIView):
+
+    serializer_class = ReplySerializer
+    permission_classes = [permissions.IsAuthenticated, IsOwner]
+
+    def get(self, request, post_pk, slug, comment_pk, format=None):
+        post = Post.objects.get(pk=post_pk, slug=slug)
+        comment = Comment.objects.get(pk=comment_pk, post_field=post)
+        replies = Reply.objects.filter(comment_field=comment)
+        serializer = ReplySerializer(replies, many=True)
+        return Response(serializer.data)
+
+    def post(self, request, post_pk, slug, comment_pk, format=None):
+        serializer = ReplySerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(owner=request.user,comment_field_id=comment_pk)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class ReplyDetailView(APIView):
+
+    serializer_class = ReplySerializer
+    permission_classes = [permissions.IsAuthenticated, IsOwner]
+
+    def get(self, request, post_pk, slug, comment_pk, reply_pk, format=None):
+        post = Post.objects.get(pk=post_pk, slug=slug)
+        comment = Comment.objects.get(pk=comment_pk, post_field=post)
+        reply = Reply.objects.get(pk=reply_pk, comment_field=comment)
+        serializer = ReplySerializer(reply)
+        return Response(serializer.data)
+
+    def put(self, request, post_pk, slug, comment_pk, reply_pk, format=None):
+        post = Post.objects.get(pk=post_pk, slug=slug)
+        comment = Comment.objects.get(pk=comment_pk, post_field=post)
+        reply = Reply.objects.get(pk=reply_pk, comment_field=comment)
+        serializer = ReplySerializer(reply, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, post_pk, slug, comment_pk, reply_pk, format=None):
+        post = Post.objects.get(pk=post_pk, slug=slug)
+        comment = Comment.objects.get(pk=comment_pk, post_field=post)
+        reply = Reply.objects.get(pk=reply_pk, comment_field=comment)
+        reply.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
