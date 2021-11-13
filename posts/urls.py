@@ -27,10 +27,16 @@ urlpatterns = [
         "comments/<int:pk>/",
         views.comment_up_votes
     ),
-    path("<int:post_pk>/<slug:slug>/comments/<int:comment_pk>/replies/", 
+    path(
+        "<int:post_pk>/<slug:slug>/comments/<int:comment_pk>/replies/", 
         views.ReplyListView.as_view()
     ),
-    path("<int:post_pk>/<slug:slug>/comments/<int:comment_pk>/replies/<int:reply_pk>/", 
+    path(
+        "<int:post_pk>/<slug:slug>/comments/<int:comment_pk>/replies/<int:reply_pk>/", 
         views.ReplyDetailView.as_view()
-    )
+    ),
+    path(
+        'replies/<int:pk>/',
+        views.reply_up_votes
+    ),
 ]
